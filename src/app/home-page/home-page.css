@@ -1,0 +1,280 @@
+/* Component-scoped theme (safe defaults). 
+   If you already set these in global styles.css, you can remove this :host block. */
+:host {
+  --bg: #f9fafb;
+  --surface: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --ring: #e5e7eb;
+  --chip: #f3f4f6;
+  --accent: #F93B1D;
+  --accent-strong: #e1361a;
+  --accent-soft: #fff0ec;
+  --shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+}
+
+/* Layout utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.shadow-soft {
+  box-shadow: var(--shadow);
+}
+.round-12 {
+  border-radius: 12px;
+}
+
+/* Header */
+.hero {
+  background: linear-gradient(180deg, rgba(249, 59, 29, 0.08), transparent 65%);
+}
+.hero-inner {
+  display: grid;
+  gap: 18px;
+  padding-top: 18px;
+  padding-bottom: 6px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  color: var(--text);
+}
+.brand-mark {
+  color: var(--accent);
+  font-size: 20px;
+}
+.brand-name {
+  font-size: 1.1rem;
+}
+.brand-name .accent {
+  color: var(--accent);
+}
+
+/* Controls */
+.controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+.search {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--ring);
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+}
+.search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  color: var(--text);
+}
+.search-icon {
+  margin-right: 8px;
+  opacity: 0.7;
+}
+.search .clear {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  opacity: 0.7;
+}
+.search .clear:hover {
+  opacity: 1;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--chip);
+  border: 1px solid var(--ring);
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+}
+.chip input {
+  accent-color: var(--accent);
+}
+
+/* Grid & cards */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--ring);
+  border-radius: 14px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(17, 24, 39, 0.09);
+  border-color: #dfe3e8;
+}
+
+.thumb-wrap {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+.thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.78rem;
+  border: 1px solid rgba(249, 59, 29, 0.2);
+}
+.badge.gray {
+  background: #eef2f7;
+  color: #6b7280;
+  border-color: #e5e7eb;
+}
+
+.content {
+  padding: 12px 14px;
+  display: grid;
+  gap: 8px;
+}
+.content h3 {
+  margin: 0;
+  font-size: 1.06rem;
+  color: var(--text);
+}
+.desc {
+  margin: 0;
+  color: var(--muted);
+  min-height: 40px;
+}
+
+/* Card footer & buttons */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-top: 1px solid var(--ring);
+  gap: 8px;
+}
+
+/* Button system — as requested (230x47, radius 10, padding 10/16) */
+.btn {
+  width: 230px;
+  height: 47px;
+  border-radius: 10px;
+  padding: 10px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  outline: none;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+}
+.btn-primary:hover {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+.btn-outline {
+  background: #fff;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+.btn-outline:hover {
+  background: var(--accent-soft);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--ring);
+}
+.btn-ghost:hover {
+  border-color: #d1d5db;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(249, 59, 29, 0.2);
+}
+
+/* Favorite star */
+.star {
+  font-size: 1.1rem;
+  line-height: 1;
+  opacity: 0.8;
+}
+.star.active {
+  color: #f5b301;
+  opacity: 1;
+}
+
+/* Empty & skeleton */
+.empty {
+  text-align: center;
+  padding: 56px 0;
+}
+.empty .emoji {
+  font-size: 54px;
+  margin-bottom: 8px;
+}
+
+.skeleton {
+  height: 300px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #eceff3 37%, #f3f4f6 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s infinite;
+  border: 1px solid var(--ring);
+}
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .controls { grid-template-columns: 1fr; }
+  .btn { width: 100%; }
+}

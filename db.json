@@ -1,0 +1,94 @@
+{
+  "recipes": [
+    {
+      "id": "1",
+      "title": "Chicken Salad",
+      "description": "A light and refreshing salad with yogurt dressing.",
+      "ingredients": [
+        "Chicken breast",
+        "Cucumber",
+        "Tomato",
+        "Lettuce",
+        "Yogurt sauce"
+      ],
+      "instructions": "Boil the chicken, slice vegetables, mix all together and serve chilled.",
+      "thumbnail": "https://picsum.photos/seed/chicken/300/200",
+      "isFavorite": false
+    },
+    {
+      "id": "2",
+      "title": "Chocolate Cake",
+      "description": "Soft and rich chocolate dessert.",
+      "ingredients": [
+        "Flour",
+        "Cocoa powder",
+        "Sugar",
+        "Butter",
+        "Eggs"
+      ],
+      "instructions": "Mix all ingredients and bake at 180°C for 30 minutes.",
+      "thumbnail": "https://picsum.photos/seed/cake/300/200",
+      "isFavorite": true
+    },
+    {
+      "id": "3",
+      "title": "Pasta Carbonara",
+      "description": "Classic Italian pasta dish with creamy sauce.",
+      "ingredients": [
+        "Spaghetti",
+        "Eggs",
+        "Parmesan cheese",
+        "Pancetta",
+        "Black pepper"
+      ],
+      "instructions": "Cook pasta, fry pancetta, whisk eggs with cheese, mix all and season with pepper.",
+      "thumbnail": "https://picsum.photos/seed/pasta/300/200",
+      "isFavorite": false
+    },
+    {
+      "id": "4",
+      "title": "Greek Salad",
+      "description": "Fresh salad with feta cheese and olives.",
+      "ingredients": [
+        "Tomatoes",
+        "Cucumber",
+        "Red onion",
+        "Feta cheese",
+        "Olives"
+      ],
+      "instructions": "Chop vegetables, add feta and olives, drizzle with olive oil and serve.",
+      "thumbnail": "https://picsum.photos/seed/greeksalad/300/200",
+      "isFavorite": false
+    },
+    {
+      "id": "5",
+      "title": "Pancakes",
+      "description": "Fluffy breakfast pancakes with syrup.",
+      "ingredients": [
+        "Flour",
+        "Milk",
+        "Eggs",
+        "Sugar",
+        "Baking powder"
+      ],
+      "instructions": "Mix batter, pour on pan, cook until golden brown on both sides, serve with syrup.",
+      "thumbnail": "https://picsum.photos/seed/pancakes/300/200",
+      "isFavorite": true
+    },
+    {
+      "id": "6",
+      "title": "Vegetable Soup",
+      "description": "Healthy and warming vegetable soup.",
+      "ingredients": [
+        "Carrots",
+        "Potatoes",
+        "Celery",
+        "Onion",
+        "Vegetable broth"
+      ],
+      "instructions": "Chop vegetables, cook in broth until tender, season with salt and pepper.",
+      "thumbnail": "https://picsum.photos/seed/soup/300/200",
+      "isFavorite": false
+    }
+  ]
+}
