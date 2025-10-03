@@ -1,9 +1,14 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import {
+  Component, OnInit, inject, signal, computed,
+  HostListener, ViewChild, ElementRef
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { RecipeService } from '../services/recipe.service'; 
+import { RecipeService } from '../services/recipe.service';
 import { Recipe } from '../models/recipe.model';
+
+type SortKey = 'new' | 'title' | 'fav';
 
 @Component({
   selector: 'app-home-page',
@@ -20,11 +25,31 @@ export class HomePageComponent implements OnInit {
 
   query = signal<string>('');
   onlyFavorites = signal<boolean>(false);
+  sortBy = signal<SortKey>('new');
+
+  placeholder = 'https://picsum.photos/seed/placeholder/640/400';
+  skeletons = Array.from({ length: 8 });
 
   private debounce!: ReturnType<typeof setTimeout>;
-  placeholder = 'https://picsum.photos/seed/placeholder/640/400';
 
-  ngOnInit(): void { this.refresh(); }
+  @ViewChild('searchBox') searchBoxRef?: ElementRef<HTMLInputElement>;
+
+  ngOnInit(): void {
+    this.refresh();
+  }
+
+  // Quick focus on search with "/"
+  @HostListener('document:keydown', ['$event'])
+  onDocKey(e: KeyboardEvent) {
+    if (e.key === '/' && !this.isTypingInInput(e)) {
+      e.preventDefault();
+      this.searchBoxRef?.nativeElement?.focus();
+    }
+  }
+  private isTypingInInput(e: KeyboardEvent) {
+    const t = e.target as HTMLElement | null;
+    return !!t && ['INPUT', 'TEXTAREA'].includes(t.tagName);
+  }
 
   debouncedRefresh(value?: string) {
     clearTimeout(this.debounce);
@@ -37,6 +62,7 @@ export class HomePageComponent implements OnInit {
   clearSearch() {
     this.query.set('');
     this.refresh();
+    this.searchBoxRef?.nativeElement?.focus();
   }
 
   refresh() {
@@ -45,7 +71,7 @@ export class HomePageComponent implements OnInit {
       q: this.query() || undefined,
       favorite: this.onlyFavorites(),
     }).subscribe({
-      next: (list) => this.recipes.set(list),
+      next: (list) => this.recipes.set(list ?? []),
       error: () => this.recipes.set([]),
       complete: () => this.loading.set(false),
     });
@@ -54,10 +80,38 @@ export class HomePageComponent implements OnInit {
   toggleFavorite(r: Recipe) {
     if (!r.id) return;
     this.service.update(r.id, { isFavorite: !r.isFavorite }).subscribe((updated) => {
-      this.recipes.update(arr => arr.map(x => x.id === updated.id ? updated : x));
+      this.recipes.update((arr) => arr.map((x) => (x.id === updated.id ? updated : x)));
     });
   }
 
+  onImgError(ev: Event) {
+    const el = ev.target as HTMLImageElement;
+    el.src = this.placeholder;
+  }
+
   trackById = (_: number, r: Recipe) => r.id;
-  filtered = computed(() => this.recipes());
+
+  // Local sort
+  filtered = computed(() => {
+    const list = [...this.recipes()];
+    const key = this.sortBy();
+
+    switch (key) {
+      case 'title':
+        list.sort((a, b) => (a.title ?? '').localeCompare(b.title ?? ''));
+        break;
+      case 'fav':
+        list.sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite));
+        break;
+      case 'new':
+      default:
+        list.sort((a: any, b: any) => {
+          const ta = a?.createdAt ? +new Date(a.createdAt) : 0;
+          const tb = b?.createdAt ? +new Date(b.createdAt) : 0;
+          return tb - ta;
+        });
+        break;
+    }
+    return list;
+  });
 }

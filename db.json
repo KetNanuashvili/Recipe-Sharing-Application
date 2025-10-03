@@ -13,7 +13,7 @@
       ],
       "instructions": "Boil the chicken, slice vegetables, mix all together and serve chilled.",
       "thumbnail": "https://picsum.photos/seed/chicken/300/200",
-      "isFavorite": false
+      "isFavorite": true
     },
     {
       "id": "2",
@@ -89,6 +89,27 @@
       "instructions": "Chop vegetables, cook in broth until tender, season with salt and pepper.",
       "thumbnail": "https://picsum.photos/seed/soup/300/200",
       "isFavorite": false
+    },
+    {
+      "id": "de4c",
+      "title": "სალათა",
+      "description": "აღწერა სალათის ",
+      "ingredients": [
+        "ტიპიი",
+        "საინტერესო"
+      ],
+      "instructions": "1.ამას\n2.ამას\n3.ამას ",
+      "thumbnail": "",
+      "isFavorite": true,
+      "createdAt": "2025-10-03T18:07:04.530Z",
+      "timeMinutes": 22,
+      "servings": 22,
+      "difficulty": "Medium",
+      "rating": 2,
+      "tags": [
+        "დამატება",
+        "დდდ"
+      ]
     }
   ]
 }
