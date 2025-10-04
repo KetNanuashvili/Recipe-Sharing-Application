@@ -44,7 +44,7 @@
           <input
             type="checkbox"
             [ngModel]="onlyFavorites()"
-            (ngModelChange)="onlyFavorites.set($event); refresh()"
+             (ngModelChange)="onlyFavorites.set($event)"
             aria-label="Favorites only"
           />
           <span>Favorites only</span>
@@ -183,8 +183,10 @@
   aria-modal="true"
   aria-label="Recipe details"
 >
-  <app-detail-view
-    [id]="activeId!"
-    (closed)="closeModal()"
-  ></app-detail-view>
+<app-detail-view
+  [id]="activeId!"
+  (closed)="closeModal()"
+  (deleted)="onDeleted($event)"
+></app-detail-view>
+
 </div>

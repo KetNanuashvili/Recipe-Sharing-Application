@@ -252,3 +252,47 @@
 .meta .actions-row{
   margin-top: 4px;
 }
+/* Bottom sticky-ish actions */
+.footer-actions{
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 22px;
+  padding-top: 14px;
+  padding-bottom: 6px;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.12));
+  border-top: 1px solid var(--ring);
+}
+
+/* Edit: თეთრი ბექგრაუნდი + var(--accent) ტექსტი */
+.btn-edit-outline{
+  display:inline-flex; align-items:center; gap:8px;
+  height:42px; padding:0 16px;
+  border-radius:12px;
+  background:#fff; color: var(--accent);
+  border:1px solid var(--accent);
+  font-weight:800; cursor:pointer;
+  transition: transform .08s ease, box-shadow .15s ease, filter .15s ease;
+}
+.btn-edit-outline:hover{ filter: brightness(1.02); box-shadow: 0 6px 16px rgba(255,90,60,.18); }
+.btn-edit-outline:active{ transform: translateY(1px); }
+.btn-edit-outline:disabled{ opacity:.6; cursor:not-allowed; }
+
+/* Delete: var(--accent) ბექგრაუნდი + თეთრი ტექსტი */
+.btn-delete{
+  display:inline-flex; align-items:center; gap:8px;
+  height:42px; padding:0 16px;
+  border-radius:12px;
+  background: var(--accent); color: #fff;
+  border:1px solid var(--accent);
+  font-weight:800; cursor:pointer;
+  box-shadow: 0 8px 18px rgba(255,90,60,.28), inset 0 0 0 1px rgba(255,255,255,.06);
+  transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
+}
+.btn-delete:hover{ filter: brightness(1.05); box-shadow: 0 10px 22px rgba(255,90,60,.34); }
+.btn-delete:active{ transform: translateY(1px); }
+.btn-delete:disabled{ opacity:.6; cursor:not-allowed; }
+
+.footer-actions .icon{ display:block }

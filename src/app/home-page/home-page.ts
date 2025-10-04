@@ -26,22 +26,18 @@ export class HomePageComponent implements OnInit {
   recipes = signal<Recipe[]>([]);
   loading = signal<boolean>(false);
 
-  query = signal<string>('');
+  query = signal<string>('');           // 🔎 ძიება (შიდა)
   onlyFavorites = signal<boolean>(false);
   sortBy = signal<SortKey>('new');
 
   placeholder = 'https://picsum.photos/seed/placeholder/640/400';
-  skeletons = Array.from({ length: 8 });
-
   private debounce!: ReturnType<typeof setTimeout>;
 
   @ViewChild('searchBox') searchBoxRef?: ElementRef<HTMLInputElement>;
 
-  ngOnInit(): void {
-    this.refresh();
-  }
+  ngOnInit(): void { this.refresh(); }
 
-  // Quick focus on search with "/"
+  // დოკუმენტზე "/" – ფოკუსი საძიებოზე
   @HostListener('document:keydown', ['$event'])
   onDocKey(e: KeyboardEvent) {
     if (e.key === '/' && !this.isTypingInInput(e)) {
@@ -54,26 +50,25 @@ export class HomePageComponent implements OnInit {
     return !!t && ['INPUT', 'TEXTAREA'].includes(t.tagName);
   }
 
+  // 🔎 debounce — ლოკალურად ფილტრავს, სერვერზე აღარ გავდივართ
   debouncedRefresh(value?: string) {
     clearTimeout(this.debounce);
     this.debounce = setTimeout(() => {
       if (value !== undefined) this.query.set(value.trim());
-      this.refresh();
+      // ❌ refresh() აღარ გვჭირდება ყოველ ინპუტზე — ფილტრაცია computed()-შია
     }, 250);
   }
 
   clearSearch() {
     this.query.set('');
-    this.refresh();
+    // refresh() არაა საჭირო — computed დაგვიფილტრავს
     this.searchBoxRef?.nativeElement?.focus();
   }
 
+  // 📥 ერთხელ იტვირთე სია (სერვერიდან) და მერე ლოკალურად იმუშავე
   refresh() {
     this.loading.set(true);
-    this.service.getAll({
-      q: this.query() || undefined,
-      favorite: this.onlyFavorites(),
-    }).subscribe({
+    this.service.getAll().subscribe({
       next: (list) => this.recipes.set(list ?? []),
       error: () => this.recipes.set([]),
       complete: () => this.loading.set(false),
@@ -94,11 +89,27 @@ export class HomePageComponent implements OnInit {
 
   trackById = (_: number, r: Recipe) => r.id;
 
-  // Local sort
+  // ✅ კომპოზიტური ფილტრაცია + სორტი (ყველაფერი ლოკალურად)
   filtered = computed(() => {
-    const list = [...this.recipes()];
-    const key = this.sortBy();
+    let list = [...this.recipes()];
+    const q = this.query().toLowerCase();
 
+    if (q) {
+      list = list.filter(r => {
+        const title = (r.title || '').toLowerCase();
+        const desc  = (r.description || '').toLowerCase();
+        const tags  = (r.tags || []).join(' ').toLowerCase();
+        const ings  = (r.ingredients || []).join(' ').toLowerCase();
+        return title.includes(q) || desc.includes(q) || tags.includes(q) || ings.includes(q);
+      });
+    }
+
+    if (this.onlyFavorites()) {
+      list = list.filter(r => !!r.isFavorite);
+    }
+
+    // სორტი
+    const key = this.sortBy();
     switch (key) {
       case 'title':
         list.sort((a, b) => (a.title ?? '').localeCompare(b.title ?? ''));
@@ -124,16 +135,20 @@ export class HomePageComponent implements OnInit {
   openDetails(id: number | string) {
     this.activeId = id;
     this.showModal = true;
-    document.body.style.overflow = 'hidden'; 
+    document.body.style.overflow = 'hidden';
   }
 
   closeModal() {
     this.showModal = false;
     this.activeId = null;
-    document.body.style.overflow = ''; 
+    document.body.style.overflow = '';
   }
 
- 
   @HostListener('document:keydown.escape')
   onEsc() { if (this.showModal) this.closeModal(); }
+
+  onDeleted(id: number | string) {
+    this.recipes.update(arr => arr.filter(r => r.id !== id));
+    this.closeModal();
+  }
 }
