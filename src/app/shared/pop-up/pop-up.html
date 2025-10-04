@@ -1,0 +1,52 @@
+<!-- BACKDROP -->
+<div
+  class="popup-backdrop"
+  *ngIf="open"
+  (click)="onBackdropClick()"
+  aria-hidden="true"
+></div>
+
+<!-- SHEET -->
+<div
+  class="popup-sheet"
+  *ngIf="open"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'popup-title'"
+  [attr.aria-describedby]="'popup-desc'"
+  (click)="$event.stopPropagation()"
+>
+  <div class="popup-card" [style.maxWidth.px]="width">
+    <div class="popup-head" [class.danger]="mode==='delete'" [class.success]="mode==='save'">
+      <div class="icon" aria-hidden="true">
+        <ng-container [ngSwitch]="mode">
+          <span *ngSwitchCase="'delete'">🗑️</span>
+          <span *ngSwitchCase="'save'">✅</span>
+          <span *ngSwitchDefault>❓</span>
+        </ng-container>
+      </div>
+      <h3 class="title" id="popup-title">{{ title || defaultTitle }}</h3>
+    </div>
+
+    <div class="popup-body">
+      <p class="desc" id="popup-desc">{{ message || defaultMessage }}</p>
+    </div>
+
+    <div class="popup-actions">
+      <button type="button" class="btn btn-ghost" (click)="onCancel()">
+        {{ cancelText || 'გაუქმება' }}
+      </button>
+
+      <button
+        #confirmBtn
+        type="button"
+        class="btn"
+        [class.btn-danger]="mode==='delete'"
+        [class.btn-primary]="mode!=='delete'"
+        (click)="onConfirm()"
+      >
+        {{ confirmText || defaultConfirm }}
+      </button>
+    </div>
+  </div>
+</div>

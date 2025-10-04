@@ -117,19 +117,29 @@
 
         <!-- RIGHT (thumbnail) -->
         <div class="stack">
-          <div class="field">
-            <span>Thumbnail URL</span>
-            <input type="url" formControlName="thumbnail" placeholder="https://..." (blur)="onThumbUrlBlur($event)" />
-          </div>
+     
 
-          <div class="dropzone" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
-            <input type="file" accept="image/*" (change)="onFileSelected($event)" />
-            <div class="dz-inner">
-              <div class="emoji">🖼️</div>
-              <p>Drag & drop an image here or click to upload</p>
-              <small>We’ll store it as data URL for the demo</small>
-            </div>
-          </div>
+      <!-- ... -->
+<div class="dropzone" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+  <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" />
+  <div class="dz-inner">
+    <div class="emoji">🖼️</div>
+    <p>Drag & drop an image here or click to upload</p>
+    <small>We’ll store it as data URL for the demo</small>
+  </div>
+</div>
+
+<!-- Preview + remove button -->
+<div class="preview" *ngIf="thumbPreview || form.value.thumbnail">
+  <img [src]="thumbPreview || form.value.thumbnail" alt="Preview" />
+  <div class="preview-actions">
+    <button type="button" class="btn btn-danger btn-sm" (click)="clearPhoto()" aria-label="Remove photo">
+      ✕ Remove photo
+    </button>
+  </div>
+</div>
+<!-- ... -->
+
 
           <div class="preview" *ngIf="thumbPreview || form.value.thumbnail">
             <img [src]="thumbPreview || form.value.thumbnail" alt="Preview" />

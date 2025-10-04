@@ -4,13 +4,16 @@ import { CommonModule } from '@angular/common';
 import { Recipe } from '../models/recipe.model';
 import { RecipeService } from '../services/recipe.service';
 import { Router } from '@angular/router';
+import { PopUp } from '../shared/pop-up/pop-up';
+
+
 
 type ParsedIngredient = { qty?: string; unit?: string; name: string; raw: string };
 
 @Component({
   selector: 'app-detail-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PopUp ],
   templateUrl: './detail-view.html',
   styleUrls: ['./detail-view.css'],
 })
@@ -24,6 +27,8 @@ export class DetailView implements OnInit {
   loading = true;
   deleting = false;                                   
   placeholder = 'https://picsum.photos/seed/placeholder/640/400';
+
+  showPop = false;
 
   ngOnInit(): void {
     this.service.getById(this.id).subscribe({
@@ -53,23 +58,32 @@ export class DetailView implements OnInit {
   onEdit() {
     const id = this.id ?? this.recipe?.id;
     if (!id) return;
-    this.closed.emit(); // მოდალის დახურვა
+    this.closed.emit(); 
     queueMicrotask(() => this.router.navigate(['/recipes', id, 'edit']));
   }
 
-  confirmDelete() {
+
+    confirmDelete() {
+    this.showPop = true;
+  }
+
+  onPopupCancel() { this.showPop = false; }
+
+  onPopupConfirm() {
+  
     const id = this.id ?? this.recipe?.id;
     if (!id) return;
-    if (!confirm('Delete this recipe? This action cannot be undone.')) return;
-
     this.deleting = true;
     this.service.delete(id).subscribe({
       next: () => {
-        this.deleted.emit(id); // მშობელს ეცნობება ID
-        this.closed.emit();    // მოდალი დაიხუროს
+        this.deleting = false;
+        this.showPop = false;
+        this.deleted.emit(id);
+        this.closed.emit();
       },
       error: () => {
         this.deleting = false;
+        this.showPop = false;
         alert('Failed to delete. Please try again.');
       },
     });

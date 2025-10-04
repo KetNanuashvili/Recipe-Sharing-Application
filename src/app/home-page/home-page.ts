@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
 import { Recipe } from '../models/recipe.model';
 import { DetailView } from '../detail-view/detail-view';
@@ -22,20 +22,38 @@ type SortKey = 'new' | 'title' | 'fav';
 })
 export class HomePageComponent implements OnInit {
   private service = inject(RecipeService);
-
+showModal = false;
+  activeId: number | string | null = null;
   recipes = signal<Recipe[]>([]);
   loading = signal<boolean>(false);
 
-  query = signal<string>('');           // 🔎 ძიება (შიდა)
+  query = signal<string>('');          
   onlyFavorites = signal<boolean>(false);
   sortBy = signal<SortKey>('new');
 
   placeholder = 'https://picsum.photos/seed/placeholder/640/400';
   private debounce!: ReturnType<typeof setTimeout>;
-
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
   @ViewChild('searchBox') searchBoxRef?: ElementRef<HTMLInputElement>;
 
-  ngOnInit(): void { this.refresh(); }
+   ngOnInit(): void {
+    this.refresh();
+
+   
+    this.route.queryParamMap.subscribe((qp) => {
+      const id = qp.get('recipe');
+      if (id) {
+        this.activeId = id;
+        this.showModal = true;
+        document.body.style.overflow = 'hidden';
+      } else {
+        this.showModal = false;
+        this.activeId = null;
+        document.body.style.overflow = '';
+      }
+    });
+  }
 
   // დოკუმენტზე "/" – ფოკუსი საძიებოზე
   @HostListener('document:keydown', ['$event'])
@@ -129,19 +147,23 @@ export class HomePageComponent implements OnInit {
     return list;
   });
 
-  showModal = false;
-  activeId: number | string | null = null;
 
-  openDetails(id: number | string) {
-    this.activeId = id;
-    this.showModal = true;
-    document.body.style.overflow = 'hidden';
+
+
+openDetails(id: number | string) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { recipe: id },
+      queryParamsHandling: 'merge', // სხვა qp არ წაიშალოს
+    });
   }
 
   closeModal() {
-    this.showModal = false;
-    this.activeId = null;
-    document.body.style.overflow = '';
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { recipe: null },
+      queryParamsHandling: 'merge',
+    });
   }
 
   @HostListener('document:keydown.escape')
@@ -151,4 +173,5 @@ export class HomePageComponent implements OnInit {
     this.recipes.update(arr => arr.filter(r => r.id !== id));
     this.closeModal();
   }
+
 }

@@ -82,3 +82,14 @@
 </div>
 
 </div>
+
+<app-pop-up
+  [open]="showPop"
+  mode="delete"
+  title="წაშლა?"
+  message="ნამდვილად გსურს ამ რეცეპტის წაშლა?"
+  confirmText="დიახ, წაშალე"
+  cancelText="გაუქმება"
+  (confirm)="onPopupConfirm()"
+  (cancel)="onPopupCancel()"
+></app-pop-up>

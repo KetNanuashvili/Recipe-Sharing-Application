@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
@@ -7,16 +7,18 @@ import { Recipe } from '../models/recipe.model';
 
 @Component({
   selector: 'app-edit-recipe',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './edit-recipe.html',
-  styleUrl: './edit-recipe.css'
+  styleUrls: ['./edit-recipe.css'] // <- FIX: styleUrls
 })
-export class EditRecipe implements OnInit{
- private fb = inject(FormBuilder);
+export class EditRecipe implements OnInit {
+  private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private service = inject(RecipeService);
   private router = inject(Router);
+
+  @ViewChild('fileInput') fileInput?: ElementRef<HTMLInputElement>; // <- FIX: for clearPhoto()
 
   id!: number | string;
   loading = true;
@@ -58,7 +60,6 @@ export class EditRecipe implements OnInit{
   }
 
   private fillForm(r: Recipe) {
-    // ჩიპების მასივები წინასწარ დავავსოთ
     this.ingredientsArr.clear();
     (r.ingredients ?? []).forEach(v => this.ingredientsArr.push(this.fb.nonNullable.control(v)));
     this.tagsArr.clear();
@@ -159,15 +160,15 @@ export class EditRecipe implements OnInit{
     };
 
     this.service.update(this.id, payload).subscribe({
-      next: () => {
-        // შენ გადაწყვიტე სად დაბრუნდები:
-        // ვარიანტი A: მთავარზე
-        this.router.navigate(['/']);
-        // ვარიანტი B: თუ გაქვს დეტალი გვერდი: this.router.navigate(['/recipes', this.id]);
-      },
+      next: () => this.router.navigate(['/']),
       error: () => alert('Failed to save changes. Please try again.'),
     });
   }
 
-  
+  clearPhoto() {
+    this.thumbPreview = null;
+    this.form.patchValue({ thumbnail: '' });
+    const el = this.fileInput?.nativeElement;
+    if (el) el.value = ''; 
+  }
 }

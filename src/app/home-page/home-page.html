@@ -22,7 +22,7 @@
           type="text"
           [ngModel]="query()"
           (ngModelChange)="debouncedRefresh($event)"
-          placeholder="Search by title or ingredient… ( / )"
+          placeholder="Search by title or ingredient…"
           aria-label="Search recipes"
         />
 
@@ -39,26 +39,24 @@
       </div>
 
       <!-- Filters -->
-      <div class="filters">
-        <label class="chip" title="Show only favorites">
-          <input
-            type="checkbox"
-            [ngModel]="onlyFavorites()"
-             (ngModelChange)="onlyFavorites.set($event)"
-            aria-label="Favorites only"
-          />
-          <span>Favorites only</span>
-        </label>
+<!-- Filters -->
+<div class="filters">
+  <label class="chip chip-toggle" title="Show only favorites">
+    <input
+      type="checkbox"
+      [ngModel]="onlyFavorites()"
+      (ngModelChange)="onlyFavorites.set($event); refresh()"
+      aria-label="Favorites only"
+    />
+    <span>Favorites only</span>
+  </label>
 
-        <label class="select-wrap" aria-label="Sort recipes">
-          <select [ngModel]="sortBy()" (ngModelChange)="sortBy.set($event)" aria-label="Sort by">
-            <option value="new">Newest</option>
-            <option value="title">Title A→Z</option>
-            <option value="fav">Favorites first</option>
-          </select>
-          <span class="caret" aria-hidden="true">▾</span>
-        </label>
-      </div>
+  <!-- სურვილის შემთხვევაში Reset ღილაკი -->
+  <button type="button" class="btn btn-ghost btn-sm" (click)="onlyFavorites.set(false); query.set(''); refresh()">
+    Reset
+  </button>
+</div>
+
     </div>
   </div>
 </header>

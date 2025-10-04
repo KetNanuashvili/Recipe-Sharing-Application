@@ -15,32 +15,37 @@
 <main class="container">
   <section class="form-card shadow-soft">
     <h1 class="title">Add a New Recipe</h1>
-    <p class="subtitle">Fill out the fields below. All required fields are marked with *</p>
+    <p class="subtitle">შეავსე ქვემოთ მოცემული ველები. *-ით მონიშნული ველები სავალდებულოა.</p>
 
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <!-- submit -> trySubmit -->
+    <form [formGroup]="form" (ngSubmit)="trySubmit()" novalidate>
       <div class="grid-2">
         <!-- LEFT COLUMN -->
         <div class="stack">
+          <!-- Basics -->
+          <h2 class="section-title">Basics</h2>
+          <p class="section-hint">დააწერე მკაფიო სახელი და მოკლე აღწერა — რას ამზადებ და რა აქვს განსაკუთრებული.</p>
+
           <label class="field">
             <span>Title *</span>
-            <input type="text" formControlName="title" placeholder="e.g. Chicken Salad" />
-            <small class="err" *ngIf="fieldInvalid('title')">
-              Please enter a title (min 3 characters).
-            </small>
+            <input type="text" formControlName="title" placeholder="e.g. Zesty Chicken Salad" />
+            <small class="err" *ngIf="fieldInvalid('title')">Please enter a title (min 3 characters).</small>
           </label>
 
           <label class="field">
             <span>Description *</span>
-            <textarea formControlName="description" rows="3" placeholder="Short summary..."></textarea>
-            <small class="err" *ngIf="fieldInvalid('description')">
-              Please enter a description (min 10 characters).
-            </small>
+            <textarea formControlName="description" rows="3" placeholder="Short summary — flavor, texture, when to serve…"></textarea>
+            <small class="err" *ngIf="fieldInvalid('description')">Please enter a description (min 10 characters).</small>
           </label>
+
+          <!-- Ingredients -->
+          <h2 class="section-title">Ingredients</h2>
+          <p class="section-hint">შეიყვანე ინგრედიენტი და დააჭირე Enter-ს (ან დატოვე ველი, რომ დაემატოს).</p>
 
           <div class="field">
             <span>Ingredients *</span>
             <div class="chips">
-              <input type="text" placeholder="Type and press Enter"
+              <input type="text" placeholder="e.g. 200g chicken, 1 tbsp mayo, dill…"
                      (keydown.enter)="$event.preventDefault(); addFromInput($event, 'ingredients')"
                      (blur)="addFromInput($event, 'ingredients')" />
               <div class="chip" *ngFor="let ing of ingredientsArr.controls; index as i">
@@ -48,19 +53,22 @@
                 <button type="button" class="x" (click)="removeChip('ingredients', i)" aria-label="Remove">✕</button>
               </div>
             </div>
-            <small class="err" *ngIf="ingredientsArr.invalid && ingredientsArr.touched">
-              Please add at least one ingredient.
-            </small>
+            <small class="err" *ngIf="ingredientsArr.invalid && ingredientsArr.touched">Please add at least one ingredient.</small>
           </div>
+
+          <!-- Steps -->
+          <h2 class="section-title">Steps</h2>
+          <p class="section-hint">დაწერე ნაბიჯ-ნაბიჯ — 1) მომზადება, 2) შერევა, 3) მოხარშვა/ცხობა, 4) მიტანა.</p>
 
           <label class="field">
             <span>Instructions *</span>
-            <textarea formControlName="instructions" rows="6"
-              placeholder="Step 1..., Step 2..., etc."></textarea>
-            <small class="err" *ngIf="fieldInvalid('instructions')">
-              Please provide instructions (min 15 characters).
-            </small>
+            <textarea formControlName="instructions" rows="6" placeholder="1) Prep… 2) Mix… 3) Cook… 4) Serve…"></textarea>
+            <small class="err" *ngIf="fieldInvalid('instructions')">Please provide instructions (min 15 characters).</small>
           </label>
+
+          <!-- Meta -->
+          <h2 class="section-title">Meta</h2>
+          <p class="section-hint">დრო/პორტიონები არჩევითია. სირთულე აარჩიე გემოცნებით.</p>
 
           <div class="grid-3">
             <label class="field">
@@ -86,11 +94,34 @@
             </label>
           </div>
 
-          <label class="field">
-            <span>Rating (0–5)</span>
-            <input type="number" formControlName="rating" min="0" max="5" step="1" placeholder="e.g. 4" />
-            <small class="err" *ngIf="fieldInvalid('rating')">Rating must be between 0 and 5.</small>
-          </label>
+          <!-- Rating (Stars) -->
+          <h2 class="section-title">Rating</h2>
+          <p class="section-hint">ონლაინ ქარდზეც გამოჩნდება. მონიშნე 1–5 ვარსკვლავი.</p>
+
+          <div class="field">
+            <span>Rate this recipe</span>
+            <div class="stars" role="radiogroup" aria-label="Recipe rating">
+              <button
+                *ngFor="let s of [1,2,3,4,5]"
+                type="button"
+                class="star-btn"
+                role="radio"
+                [attr.aria-label]="s + ' stars'"
+                [attr.aria-checked]="ratingCtrl.value === s"
+                [class.active]="(hoveredRating || ratingCtrl.value) >= s"
+                (mouseenter)="hoverRating(s)"
+                (mouseleave)="hoverRating(0)"
+                (click)="setRating(s)">
+                ★
+              </button>
+              <span class="count">{{ ratingCtrl.value }}/5</span>
+            </div>
+            <small class="err" *ngIf="fieldInvalid('rating')">Select 0–5 stars.</small>
+          </div>
+
+          <!-- Tags -->
+          <h2 class="section-title">Tags</h2>
+          <p class="section-hint">დაამატე ძიებისთვის: #salad, #quick, #healthy…</p>
 
           <div class="field">
             <span>Tags</span>
@@ -104,6 +135,10 @@
               </div>
             </div>
           </div>
+
+          <!-- Author -->
+          <h2 class="section-title">Author</h2>
+          <p class="section-hint">სურვილისამებრ მიუთითე ავტორის სახელი და ავატარი.</p>
 
           <div class="grid-2 compact">
             <label class="field">
@@ -122,17 +157,12 @@
           </label>
         </div>
 
-        <!-- RIGHT COLUMN: THUMBNAIL -->
+        <!-- RIGHT COLUMN: MEDIA (Upload only) -->
         <div class="stack">
-          <div class="field">
-            <span>Thumbnail URL</span>
-            <input type="url" formControlName="thumbnail" placeholder="https://..."
-                   (blur)="onThumbUrlBlur($event)" />
-          </div>
+          <h2 class="section-title">Media</h2>
+          <p class="section-hინt">ატვირთე ფოტო Drag & Drop-ით ან დააკლიკე ველს.</p>
 
-          <div class="dropzone"
-               (drop)="onDrop($event)"
-               (dragover)="onDragOver($event)">
+          <div class="dropzone" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
             <input type="file" accept="image/*" (change)="onFileSelected($event)" />
             <div class="dz-inner">
               <div class="emoji">🖼️</div>
@@ -141,21 +171,58 @@
             </div>
           </div>
 
-          <div class="preview" *ngIf="thumbPreview || form.value.thumbnail">
-            <img [src]="thumbPreview || form.value.thumbnail" alt="Preview" />
+          <div class="preview" *ngIf="thumbPreview || thumbnailCtrl.value">
+            <img [src]="thumbPreview || thumbnailCtrl.value" alt="Preview" />
           </div>
         </div>
       </div>
+  <div class="actions">
+    <!-- Cancel now opens confirmation popup -->
+    <button type="button" class="btn btn-ghost" (click)="tryCancel()">Cancel</button>
 
-      <div class="actions">
-        <a routerLink="/" class="btn btn-ghost">Cancel</a>
-        <button class="btn btn-primary shiny cta" type="submit" [disabled]="form.invalid">
-          <span>Create Recipe</span>
-          <svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-            <path d="M5 12h12M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
+    <!-- Submit triggers trySubmit() through (ngSubmit) -->
+    <button class="btn btn-primary shiny cta" type="submit" [disabled]="form.invalid">
+      <span>Create Recipe</span>
+      <svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d="M5 12h12M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
     </form>
   </section>
 </main>
+
+<app-pop-up
+  [open]="showInvalidPop"
+  mode="confirm"
+  title="გთხოვ შეავსო აუცილებელი ველები"
+  [message]="missingFields?.length ? ('აკლია: ' + missingFields.join(', ')) : 'შეავსე *-ით მონიშნული ველები.'"
+  confirmText="გასაგებია"
+  cancelText="დახურვა"
+  (confirm)="onInvalidClose()"
+  (cancel)="onInvalidClose()"
+></app-pop-up>
+
+<!-- 2) SAVE PopUp -->
+<app-pop-up
+  [open]="showSavePop"
+  mode="save"
+  title="შენახვა?"
+  message="დარწმუნებული ხარ, რომ მონაცემები სწორია და გსურს შენახვა?"
+  confirmText="დიახ, შეინახე"
+  cancelText="გაუქმება"
+  (confirm)="onSaveConfirm()"
+  (cancel)="onSaveCancel()"
+></app-pop-up>
+
+<!-- 3) CANCEL PopUp: warn about clearing -->
+<app-pop-up
+  [open]="showCancelPop"
+  mode="confirm"
+  title="გაუქმება?"
+  message="გაუქმების შემთხვევაში შეივსო ყველა ველი წაიშლება. გავაგრძელოთ?"
+  confirmText="დიახ, გაასუფთავე"
+  cancelText="დარჩენა"
+  (confirm)="onCancelFlowConfirm()"
+  (cancel)="onCancelFlowCancel()"
+></app-pop-up>

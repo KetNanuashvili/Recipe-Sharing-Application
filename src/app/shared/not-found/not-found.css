@@ -1,0 +1,16 @@
+.nf-wrap { display: grid; place-items: center; min-height: calc(100dvh - 120px); }
+.nf-card {
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--ring);
+  border-radius: 16px;
+  padding: 32px 24px;
+  max-width: 560px; width: 100%;
+}
+.emoji { font-size: 64px; margin-bottom: 10px; }
+.title { margin: 4px 0 8px; font-size: 1.7rem; letter-spacing: .2px; }
+.desc  { margin: 0 0 18px; color: var(--muted); font-size: 1rem; }
+
+.actions { display: flex; gap: 10px; justify-content: center; }
+.btn { min-width: 180px; height: 46px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; }
+.btn-ghost { border: 1px solid var(--ring); color: var(--text); background: transparent; }
