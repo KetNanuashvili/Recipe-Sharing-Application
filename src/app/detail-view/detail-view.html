@@ -1,0 +1,73 @@
+<div class="detail-wrap" (click)="$event.stopPropagation()">
+  <button class="close-x" type="button" (click)="closed.emit()" aria-label="Close">
+  ✕
+</button>
+
+
+  <ng-container *ngIf="loading; else content">
+    <div class="loading">⏳ Loading...</div>
+  </ng-container>
+
+  <ng-template #content>
+    <div *ngIf="recipe; else notFound">
+      <div class="header">
+        <img class="thumb" [src]="recipe.thumbnail || placeholder" [alt]="recipe.title" />
+        <div class="meta">
+          <h2 class="title">{{ recipe.title }}</h2>
+          <p class="desc">{{ recipe.description }}</p>
+
+
+<div class="actions-row">
+  <button type="button" class="btn-edit" (click)="onEdit()">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" class="icon">
+      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z" fill="currentColor"/>
+    </svg>
+    <span>Edit</span>
+  </button>
+</div>
+
+
+          <div class="chips-row">
+            <span class="chip-soft" *ngIf="recipe.timeMinutes">⏱ {{ recipe.timeMinutes }}m</span>
+            <span class="chip-soft" *ngIf="recipe.servings">🍽️ {{ recipe.servings }}</span>
+            <span class="chip-soft" *ngIf="recipe.difficulty">⚙️ {{ recipe.difficulty }}</span>
+            <span class="chip-soft" *ngIf="recipe.rating !== undefined">⭐ {{ recipe.rating }}/5</span>
+          </div>
+        </div>
+      </div>
+
+<div class="body" *ngIf="recipe as rec; else notFound">
+  <!-- INGREDIENTS -->
+  <div class="col">
+    <div class="section-head">
+      <h3>Ingredients</h3>
+      <span class="pill count" *ngIf="parsedIngredients.length">{{ parsedIngredients.length }}</span>
+    </div>
+
+    <ul class="ingredients" *ngIf="parsedIngredients.length; else noIng">
+      <li *ngFor="let p of parsedIngredients">
+        <span class="dot" aria-hidden="true">✓</span>
+        <span class="qty"  *ngIf="p.qty">{{ p.qty }}</span>
+        <span class="unit" *ngIf="p.unit">{{ p.unit }}</span>
+        <span class="name">{{ p.name }}</span>
+      </li>
+    </ul>
+    <ng-template #noIng><div class="muted">No ingredients provided.</div></ng-template>
+  </div>
+
+  <!-- INSTRUCTIONS -->
+  <div class="col">
+    <div class="section-head"><h3>Instructions</h3></div>
+    <div class="text" *ngIf="rec?.instructions as ins; else noIns">{{ ins }}</div>
+    <ng-template #noIns><div class="muted">No instructions provided.</div></ng-template>
+  </div>
+</div>
+
+
+    </div>
+
+    <ng-template #notFound>
+      <div class="muted">Recipe was not found.</div>
+    </ng-template>
+  </ng-template>
+</div>

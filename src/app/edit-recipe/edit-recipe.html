@@ -14,27 +14,23 @@
 
 <main class="container">
   <section class="form-card shadow-soft">
-    <h1 class="title">Add a New Recipe</h1>
-    <p class="subtitle">Fill out the fields below. All required fields are marked with *</p>
+    <h1 class="title">Edit Recipe</h1>
+    <p class="subtitle">Update the fields below and save your changes.</p>
 
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
       <div class="grid-2">
-        <!-- LEFT COLUMN -->
+        <!-- LEFT -->
         <div class="stack">
           <label class="field">
             <span>Title *</span>
             <input type="text" formControlName="title" placeholder="e.g. Chicken Salad" />
-            <small class="err" *ngIf="fieldInvalid('title')">
-              Please enter a title (min 3 characters).
-            </small>
+            <small class="err" *ngIf="fieldInvalid('title')">Please enter a title (min 3 chars).</small>
           </label>
 
           <label class="field">
             <span>Description *</span>
             <textarea formControlName="description" rows="3" placeholder="Short summary..."></textarea>
-            <small class="err" *ngIf="fieldInvalid('description')">
-              Please enter a description (min 10 characters).
-            </small>
+            <small class="err" *ngIf="fieldInvalid('description')">Please enter a description (min 10 chars).</small>
           </label>
 
           <div class="field">
@@ -55,11 +51,8 @@
 
           <label class="field">
             <span>Instructions *</span>
-            <textarea formControlName="instructions" rows="6"
-              placeholder="Step 1..., Step 2..., etc."></textarea>
-            <small class="err" *ngIf="fieldInvalid('instructions')">
-              Please provide instructions (min 15 characters).
-            </small>
+            <textarea formControlName="instructions" rows="6" placeholder="Step 1..., Step 2..., etc."></textarea>
+            <small class="err" *ngIf="fieldInvalid('instructions')">Please provide instructions (min 15 chars).</small>
           </label>
 
           <div class="grid-3">
@@ -122,17 +115,14 @@
           </label>
         </div>
 
-        <!-- RIGHT COLUMN: THUMBNAIL -->
+        <!-- RIGHT (thumbnail) -->
         <div class="stack">
           <div class="field">
             <span>Thumbnail URL</span>
-            <input type="url" formControlName="thumbnail" placeholder="https://..."
-                   (blur)="onThumbUrlBlur($event)" />
+            <input type="url" formControlName="thumbnail" placeholder="https://..." (blur)="onThumbUrlBlur($event)" />
           </div>
 
-          <div class="dropzone"
-               (drop)="onDrop($event)"
-               (dragover)="onDragOver($event)">
+          <div class="dropzone" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
             <input type="file" accept="image/*" (change)="onFileSelected($event)" />
             <div class="dz-inner">
               <div class="emoji">🖼️</div>
@@ -150,7 +140,7 @@
       <div class="actions">
         <a routerLink="/" class="btn btn-ghost">Cancel</a>
         <button class="btn btn-primary shiny cta" type="submit" [disabled]="form.invalid">
-          <span>Create Recipe</span>
+          <span>Save Changes</span>
           <svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
             <path d="M5 12h12M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>

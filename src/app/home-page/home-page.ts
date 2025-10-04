@@ -7,13 +7,16 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
 import { Recipe } from '../models/recipe.model';
+import { DetailView } from '../detail-view/detail-view';
+
+
 
 type SortKey = 'new' | 'title' | 'fav';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, DetailView],
   templateUrl: './home-page.html',
   styleUrls: ['./home-page.css'],
 })
@@ -114,4 +117,23 @@ export class HomePageComponent implements OnInit {
     }
     return list;
   });
+
+  showModal = false;
+  activeId: number | string | null = null;
+
+  openDetails(id: number | string) {
+    this.activeId = id;
+    this.showModal = true;
+    document.body.style.overflow = 'hidden'; 
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.activeId = null;
+    document.body.style.overflow = ''; 
+  }
+
+ 
+  @HostListener('document:keydown.escape')
+  onEsc() { if (this.showModal) this.closeModal(); }
 }

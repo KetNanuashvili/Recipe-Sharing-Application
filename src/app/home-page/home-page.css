@@ -85,3 +85,17 @@
   .desc { min-height: auto; }
   .btn { width: 100%; }
 }
+/* Backdrop */
+.modal-backdrop{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+.modal-sheet{
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  padding: 28px;                        /* ↑ კიდე მეტი სივრცე */
+  z-index: 1001;
+}

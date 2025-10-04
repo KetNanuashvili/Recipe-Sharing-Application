@@ -1,0 +1,254 @@
+/* === MODAL CONTAINER — taller, roomier === */
+.detail-wrap{
+  position: relative;
+  width: min(980px, 94vw);
+  max-height: 92vh;          /* ↑ უფრო მაღალი */
+  overflow: auto;
+  padding: 24px 24px 28px;   /* ↑ ცოტა მეტი პადინგი */
+  border-radius: 18px;
+  background: var(--surface);
+  border: 1px solid var(--ring);
+  box-shadow: 0 24px 80px rgba(0,0,0,.55), var(--shadow);
+  animation: pop .18s ease;
+}
+@keyframes pop { from{ transform: scale(.985); opacity: .78 } to{ transform: scale(1); opacity: 1 } }
+
+/* === BIG, RED, PROMINENT CLOSE BUTTON === */
+.close-x{
+  position:absolute; top:14px; right:14px;
+  width:46px; height:46px;             /* ↑ უფრო დიდი */
+  border-radius:12px;
+  border:none;
+  background: #ff3b2e;                 /* მკვეთრი წითელი */
+  color:#fff;
+  font-size:22px;                       /* ↑ ხატულაც დიდი */
+  line-height:1;
+  cursor:pointer;
+  box-shadow: 0 10px 24px rgba(255,59,46,.25), inset 0 0 0 1px rgba(255,255,255,.15);
+  transition: transform .12s ease, background .15s ease, box-shadow .15s ease;
+}
+.close-x:hover{ background:#e1361a; transform: scale(1.05); }
+.close-x:active{ transform: scale(0.98); }
+.close-x:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255,59,46,.35), 0 10px 24px rgba(255,59,46,.25);
+}
+
+/* === HEADER AREA === */
+.header{ display:flex; gap:18px; align-items:flex-start; }
+.thumb{
+  width:240px; height:168px;           /* ↑ ფოტო ოდნავ დიდი */
+  object-fit:cover; border-radius:14px; border:1px solid var(--ring);
+}
+.meta{ display:grid; gap:10px; }
+
+/* === TYPOGRAPHY — clearer text === */
+.title{
+  margin:0;
+  font-size: 1.7rem;                    /* ↑ სათაური */
+  line-height: 1.25;
+  letter-spacing: .2px;
+}
+.desc{
+  margin:0;
+  color: var(--text);                   /* ↑ სუსტად კი არა, მკაფიოდ */
+  opacity: .96;
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+/* ჩიფები მკაფიოდ გამოჩნდეს */
+.chips-row{ display:flex; flex-wrap:wrap; gap:8px; }
+.chip-soft{
+  background: var(--accent-soft);
+  color: var(--text);
+  border:1px solid rgba(249,59,29,.25);
+  padding:6px 10px; border-radius:999px;
+  font-weight: 600;                     /* ↑ წონა */
+}
+
+/* === BODY LAYOUT === */
+.body{
+  display:grid; grid-template-columns: 1fr 1fr;
+  gap:20px; margin-top:20px;
+}
+.col h3{
+  margin: 4px 0 8px;
+  font-size: 1.1rem;                    /* ↑ სექციის სათაურები */
+  letter-spacing: .2px;
+}
+.list{
+  margin:8px 0 0 18px;
+  display:grid; gap:6px;
+}
+.list li{
+  font-size: 1rem;                      /* ↑ ინგრედიენტები მკაფიოდ */
+  line-height: 1.6;
+}
+.text{
+  white-space: pre-wrap;
+  font-size: 1rem;                      /* ↑ ინსტრუქციაც მკაფიოდ */
+  line-height: 1.65;
+}
+.muted{ color: var(--muted); }
+
+/* Loading center */
+.loading{ padding:60px 0; text-align:center; font-size: 1rem; }
+
+/* === MOBILE === */
+@media (max-width: 780px){
+  .header{ flex-direction:column }
+  .thumb{ width:100%; height:210px }    /* ↑ მობილურზეც ცოტა უფრო დიდი */
+  .body{ grid-template-columns: 1fr; }
+}
+/* === MODAL CONTAINER — taller, roomier (როგორც უკვე გაქვს) === */
+.detail-wrap{
+  position: relative;
+  width: min(980px, 94vw);
+  max-height: 92vh;
+  overflow: auto;
+  padding: 24px 24px 28px;
+  border-radius: 18px;
+  background: var(--surface);
+  border: 1px solid var(--ring);
+  box-shadow: 0 24px 80px rgba(0,0,0,.55), var(--shadow);
+  animation: pop .18s ease;
+}
+@keyframes pop { from{ transform: scale(.985); opacity: .78 } to{ transform: scale(1); opacity: 1 } }
+
+/* დიდი, წითელი X */
+.close-x{
+  position:absolute; top:14px; right:14px;
+  width:46px; height:46px;
+  border-radius:12px; border:none;
+  background:#ff3b2e; color:#fff;
+  font-size:22px; line-height:1;
+  cursor:pointer;
+  box-shadow: 0 10px 24px rgba(255,59,46,.25), inset 0 0 0 1px rgba(255,255,255,.15);
+  transition: transform .12s ease, background .15s ease, box-shadow .15s ease;
+}
+.close-x:hover{ background:#e1361a; transform: scale(1.05); }
+.close-x:active{ transform: scale(0.98); }
+.close-x:focus-visible{ outline:none; box-shadow:0 0 0 3px rgba(255,59,46,.35), 0 10px 24px rgba(255,59,46,.25); }
+
+/* HEADER */
+.header{ display:flex; gap:18px; align-items:flex-start; }
+.thumb{ width:240px; height:168px; object-fit:cover; border-radius:14px; border:1px solid var(--ring); }
+.meta{ display:grid; gap:10px; }
+
+.title{ margin:0; font-size:1.7rem; line-height:1.25; letter-spacing:.2px; }
+.desc{ margin:0; color:var(--text); opacity:.96; font-size:1.02rem; line-height:1.55; }
+
+.chips-row{ display:flex; flex-wrap:wrap; gap:8px; }
+.chip-soft{
+  background: var(--accent-soft);
+  color: var(--text);
+  border:1px solid rgba(249,59,29,.25);
+  padding:6px 10px; border-radius:999px;
+  font-weight:600;
+}
+
+/* BODY */
+.body{ display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-top:20px; }
+
+/* სექციის ჰედერი პატარა „ბეჯით“ */
+.section-head{ display:flex; align-items:center; gap:10px; }
+.section-head h3{ margin: 4px 0 8px; font-size:1.12rem; letter-spacing:.2px; }
+.pill.count{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width: 26px; height: 22px; padding:0 8px;
+  border-radius:999px; font-size:.82rem; font-weight:700;
+  background: var(--accent-soft); color: var(--accent);
+  border:1px solid rgba(249,59,29,.25);
+}
+
+/* INGREDIENTS — ორ სვეტად, მკაფიო ნიშნულებით */
+.ingredients{
+  list-style:none; padding:0; margin:10px 0 0 0;
+  display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px 16px;
+}
+.ingredients li{
+  display:grid; grid-template-columns: auto auto auto 1fr; align-items:baseline; gap:8px;
+  padding:10px 12px; border:1px solid var(--ring); border-radius:12px; background: var(--surface-2);
+}
+.ingredients .dot{
+  width:20px; height:20px; display:grid; place-items:center;
+  border-radius:6px; font-size:.9rem; font-weight:800;
+  background: rgba(34,197,94,.18); color: #22c55e;   /* მწვანე „✓“ */
+  border:1px solid rgba(34,197,94,.35);
+}
+.ingredients .qty{
+  font-weight:800; font-variant-numeric: tabular-nums;
+}
+.ingredients .unit{
+  opacity:.9; font-weight:600;
+}
+.ingredients .name{
+  color: var(--text);
+}
+
+/* Instructions მკაფიოდ */
+.text{ white-space: pre-wrap; font-size:1rem; line-height:1.65; }
+.muted{ color: var(--muted); }
+.loading{ padding:60px 0; text-align:center; font-size:1rem; }
+
+/* Scrollbar (ლამაზი) */
+.detail-wrap::-webkit-scrollbar{ width:10px; }
+.detail-wrap::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.12);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* MOBILE */
+@media (max-width: 980px){
+  .ingredients{ grid-template-columns: 1fr; } /* მობილურზე ერთი სვეტი */
+}
+@media (max-width: 780px){
+  .header{ flex-direction:column }
+  .thumb{ width:100%; height:210px }
+  .body{ grid-template-columns: 1fr; }
+}
+.detail-wrap > .header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-top: 10px;
+  margin: -10px -10px 10px -10px;
+  padding: 10px;
+  background: linear-gradient(180deg, rgba(11,18,36,.9), rgba(11,18,36,.7) 60%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+/* Actions row (ჰედერში) */
+.actions-row{
+  display:flex; gap:10px; align-items:center; margin-top:6px;
+}
+
+/* Edit ღილაკი — მკაფიო, თემასთან შეხამებული */
+.btn-edit{
+  display:inline-flex; align-items:center; gap:8px;
+  height:38px; padding:0 14px;
+  border-radius:10px; border:1px solid var(--accent);
+  background: linear-gradient(135deg, #ff6a3d 0%, #ff3b2e 45%, #ff6a3d 100%);
+  color:#fff; font-weight:700; cursor:pointer;
+  box-shadow: 0 8px 18px rgba(255,90,60,.28), inset 0 0 0 1px rgba(255,255,255,.12);
+  transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
+}
+.btn-edit:hover{
+  filter: brightness(1.05);
+  box-shadow: 0 10px 22px rgba(255,90,60,.34), inset 0 0 0 1px rgba(255,255,255,.16);
+}
+.btn-edit:active{ transform: translateY(1px); }
+.btn-edit:focus-visible{
+  outline:none;
+  box-shadow: 0 0 0 3px rgba(249,59,29,.32), 0 10px 22px rgba(255,90,60,.34);
+}
+.btn-edit .icon{ display:block }
+
+/* თუ გინდა სათაურის ხაზზე მოტანა — შეგიძლია .meta-ს ბოლოს ჩასვა და ეს დაამატო: */
+.meta { position: relative; }
+.meta .actions-row{
+  margin-top: 4px;
+}

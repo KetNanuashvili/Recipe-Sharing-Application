@@ -1,16 +1,15 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page';
+import { EditRecipe } from './edit-recipe/edit-recipe';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
 
-  // Add (lazy-loaded standalone component)
   { path: 'add', loadComponent: () =>
       import('./add-recipe/add-recipe').then(m => m.AddRecipeComponent)
   },
 
-  // detail გვერდი მერე ჩასვამ: { path: 'recipes/:id', loadComponent: ... }
+  { path: 'recipes/:id/edit', component: EditRecipe },
 
-  // MUST be last
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: '' }, 
 ];
